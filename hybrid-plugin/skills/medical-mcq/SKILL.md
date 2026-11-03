@@ -47,6 +47,6 @@ Then show only: "ارفع محاضرتك وحدد عدد الأسئلة🎖️" 
 ## Privacy and safety
 - The MCP server receives generated question stems, options, correct-answer letters, and rationales, but not the original lecture files or full conversation.
 - Do not include patient identifiers, PHI, names, or confidential records in questions sent to the MCP service.
-- The server uses encrypted session tokens and does not use an AI API or a database. Never claim absolute confidentiality or zero provider-side processing: the hosting provider processes HTTPS requests under its own policies.
+- The server uses encrypted session tokens that expire after four hours and does not use an AI API or a database. The service is for practice, not a proctored or high-stakes examination system; stateless session tokens are not designed to prevent deliberate replay or cheating. Never claim absolute confidentiality or zero provider-side processing: the hosting provider processes HTTPS requests under its own policies.
 - Do not send student files, scores, or answers to Telegram, GitHub, or other external destinations.
 - This is educational practice, not medical advice or clinical decision support.
