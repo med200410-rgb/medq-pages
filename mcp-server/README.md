@@ -26,3 +26,7 @@ This Worker targets Cloudflare Workers Free. Current published limits include 10
 6. Only after the OpenAI portal provides a domain challenge token, set `OPENAI_APP_CHALLENGE` as a Worker variable/secret. The Worker serves it at `/.well-known/openai-apps-challenge`.
 
 No OpenAI API key is required or used. Do not enable any paid service without the publisher's explicit approval.
+
+## Deployment branch
+
+This Worker is isolated in the `mcp-server` root directory and is deployed from the `medq-hybrid-mcp` branch. The main GitHub Pages site and the `main` branch are not part of this Worker deployment.
