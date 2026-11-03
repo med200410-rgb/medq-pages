@@ -28,7 +28,12 @@ export function validateQuestions(questions: QuestionInput[]): void {
     if (!/[\u0600-\u06FF]/.test(q.rationale) || !/[A-Za-z]/.test(q.rationale)) throw new Error(`Question ${n}: rationale must mix Arabic and English medical terminology.`);
   });
 }
-function asArrayBuffer(bytes: Uint8Array): ArrayBuffer {\n  const copy = new Uint8Array(bytes.byteLength);\n  copy.set(bytes);\n  return copy.buffer;\n}\nfunction bytesToBase64Url(bytes: Uint8Array): string {
+function asArrayBuffer(bytes: Uint8Array): ArrayBuffer {
+  const copy = new Uint8Array(bytes.byteLength);
+  copy.set(bytes);
+  return copy.buffer;
+}
+function bytesToBase64Url(bytes: Uint8Array): string {
   let binary = ""; for (let i=0;i<bytes.length;i+=0x8000) binary += String.fromCharCode(...bytes.subarray(i,i+0x8000));
   return btoa(binary).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/g,"");
 }
