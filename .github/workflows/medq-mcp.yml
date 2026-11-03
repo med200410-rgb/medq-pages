@@ -1,9 +1,7 @@
 name: MedQ MCP checks
 on:
-  push:
-    branches: [medq-hybrid-mcp]
   pull_request:
-    branches: [medq-hybrid-mcp]
+    branches: [main]
   workflow_dispatch:
 jobs:
   test:
