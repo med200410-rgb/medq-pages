@@ -9,20 +9,25 @@
 <body>
 <a href="index.html">MedQ</a>
 <h1>Privacy Policy</h1>
-<p><strong>Last updated: November 2, 2026</strong></p>
-<p>This policy explains how the MedQ | Medical MCQ Builder project handles information.</p>
+<p><strong>Last updated: November 3, 2026</strong></p>
+<p>This policy explains how the MedQ | Medical MCQ Builder project handles information in its ChatGPT Skill and, when enabled, its Hybrid MCP exam engine.</p>
 <h2>How MedQ works</h2>
-<p>MedQ is a skills-only educational plugin for ChatGPT. The MedQ publisher does not operate a MedQ backend, API, user account system, database, analytics service, or separate file-storage service. The plugin instructions do not send uploaded lectures, prompts, answers, or quiz scores to the MedQ publisher. The publisher does not receive or store those materials through the plugin.</p>
+<p>MedQ is an educational ChatGPT plugin. The Skill reads materials supplied in the user's ChatGPT conversation and generates practice questions. The MedQ publisher does not operate a user account system, advertising service, or analytics service.</p>
 <h2>ChatGPT and uploaded materials</h2>
-<p>When you use MedQ, the files and messages you submit are processed within your ChatGPT experience. Their handling, storage, and deletion are governed by OpenAI's applicable policies and the controls available in your ChatGPT account. The MedQ publisher cannot access or delete content held in your ChatGPT account.</p>
-<p>Read <a href="https://openai.com/policies/privacy-policy/">OpenAI's Privacy Policy</a> for information about OpenAI's data practices.</p>
+<p>Lecture files and messages are processed within the user's ChatGPT experience. Their handling, storage, and deletion are governed by OpenAI's applicable policies and the controls available in the user's ChatGPT account. The MedQ publisher cannot access or delete content held in a user's ChatGPT account.</p>
+<p>Read <a href="https://openai.com/policies/privacy-policy/">OpenAI's Privacy Policy</a>.</p>
+<h2>Hybrid exam engine (when available)</h2>
+<p>When the Hybrid MCP exam engine is enabled, ChatGPT sends the generated question stems, five answer options, correct-answer letters, and short rationales to the MedQ exam service so it can validate the exam, manage question progression, grade submitted answer letters, and calculate a score. The service does not receive the original lecture files or the full ChatGPT conversation by design.</p>
+<p>The exam service uses encrypted, short-lived session tokens that expire after four hours. The MedQ application does not write exam sessions to a database, file store, analytics system, or application-level request-body logs. Session content is carried in the encrypted token needed to continue the quiz. The service does not call an OpenAI API or another AI-generation API.</p>
+<p>The service is hosted by Cloudflare. Cloudflare processes network requests and related technical information as the infrastructure provider under its own terms and privacy practices. MedQ cannot control Cloudflare's independent platform-level processing or retention. Read <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's Privacy Policy</a>.</p>
+<p>Do not include patient names, identifiers, medical record numbers, protected health information, or other confidential personal data in questions sent to the exam engine.</p>
 <h2>MedQ website</h2>
 <p>The MedQ information website is hosted using GitHub Pages. GitHub may process technical information about website requests under its own privacy policy. Read <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement">GitHub's Privacy Statement</a>.</p>
 <h2>Optional support and community links</h2>
 <p>If you choose to visit or contact the MedQ Telegram channel, Telegram processes information according to its own policies. If you submit feedback through GitHub, that content may be publicly visible and is handled by GitHub. Do not send patient-identifiable information, private lecture files, passwords, or confidential records through public support channels.</p>
 <p>Telegram: <a href="https://t.me/chatgpt_ser">MedQ support and community channel</a>.</p>
 <h2>Retention, deletion, and sharing</h2>
-<p>The MedQ publisher does not retain copies of lecture files, prompts, answers, or scores through the plugin and does not sell or share such content. To manage ChatGPT conversations or uploaded files, use the controls provided by ChatGPT. Information submitted directly to GitHub or Telegram is subject to those services' retention and deletion processes.</p>
+<p>The MedQ publisher does not maintain a database of student profiles, original lecture files, or exam histories. Hybrid session tokens expire after four hours; users can end a session by discarding the token. Information sent directly to GitHub, Telegram, ChatGPT, or Cloudflare is subject to those services' own retention and deletion processes.</p>
 <h2>Children</h2>
 <p>MedQ is intended for medical students and adult learners, not children under 13. Do not submit a child's personal information.</p>
 <h2>Changes and contact</h2>
