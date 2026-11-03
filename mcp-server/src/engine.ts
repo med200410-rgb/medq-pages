@@ -21,7 +21,7 @@ export function validateQuestions(questions: QuestionInput[]): void {
     if (!q || typeof q.stem !== "string" || q.stem.trim().length < 8 || q.stem.length > 8000) throw new Error(`Question ${n}: invalid question stem.`);
     if (!q.options || typeof q.options !== "object" || Object.keys(q.options).sort().join(",") !== "A,B,C,D,E") throw new Error(`Question ${n}: exactly five options A-E are required.`);
     const values = ANSWER_LETTERS.map((l) => q.options[l]);
-    if (values.some((v) => typeof v !== "string" || !v.trim() || v.length > 1000)) throw new Error(`Question ${n}: exactly five non-empty options A-E are required; each must be at most 1,000 characters.`);
+    if (values.some((v) => typeof v !== "string" || !v.trim() || v.length > 1000)) throw new Error(`Question ${n}: five options A-E are required, and each must be non-empty and at most 1,000 characters.`);
     if (new Set(values.map(normalizeOption)).size !== 5) throw new Error(`Question ${n}: duplicate answer options detected.`);
     if (!ANSWER_LETTERS.includes(q.correct_answer)) throw new Error(`Question ${n}: correct_answer must be A-E.`);
     if (typeof q.rationale !== "string" || q.rationale.trim().length < 8 || q.rationale.length > 3000) throw new Error(`Question ${n}: invalid rationale.`);
