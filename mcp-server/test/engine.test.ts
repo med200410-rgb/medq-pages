@@ -1,0 +1,13 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {answerSession,decodeSession,startSession,validateQuestions,type QuestionInput} from "../src/engine.ts";
+const key="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+const q=(n:number):QuestionInput=>({stem:`Which option is correct for medical test question ${n}?`,options:{A:`Alpha distractor ${n}`,B:`Beta correct ${n}`,C:`Gamma distractor ${n}`,D:`Delta distractor ${n}`,E:`Epsilon distractor ${n}`},correct_answer:"B",rationale:"الجواب الصحيح B لأن clinical mechanism يدعم هذا الاختيار بشكل مباشر."});
+test("rejects duplicate choices",()=>{const x=q(1);x.options.E=x.options.D;assert.throws(()=>validateQuestions([x]),/duplicate/i);});
+test("rejects four options",()=>{const x=q(1);(x.options as any).E=undefined;assert.throws(()=>validateQuestions([x]),/five options/i);});
+test("rejects non-bilingual rationale",()=>{const x=q(1);x.rationale="The correct answer is B because the mechanism is specific.";assert.throws(()=>validateQuestions([x]),/mix Arabic and English/i);});
+test("starts with one question and hides key",async()=>{const r=await startSession([q(1),q(2)],key,1000);assert.equal(r.question.number,1);assert.equal("correct_answer" in r.question,false);assert.equal((await decodeSession(r.session_token,key,1001)).questions.length,2);});
+test("correct answer advances without explanation",async()=>{const s=await startSession([q(1),q(2)],key,1000);const r=await answerSession(s.session_token,"B",key,1001);assert.equal(r.correct,true);assert.equal(r.rationale,undefined);assert.equal(r.next_question?.number,2);});
+test("wrong answer returns correct option and rationale",async()=>{const s=await startSession([q(1),q(2)],key,1000);const r=await answerSession(s.session_token,"A",key,1001);assert.equal(r.correct,false);assert.equal(r.correct_answer,"B");assert.match(r.rationale||"",/[A-Za-z]/);assert.ok(r.next_session_token);});
+test("calculates final score",async()=>{const s=await startSession([q(1),q(2)],key,1000);const r=await answerSession(s.session_token,"B",key,1001);const f=await answerSession(r.next_session_token!,"A",key,1002);assert.equal(f.score,1);assert.equal(f.percentage,50);});
+test("rejects tampered and expired tokens",async()=>{const s=await startSession([q(1)],key,1000);const t=s.session_token.slice(0,10)+(s.session_token[10]==="A"?"B":"A")+s.session_token.slice(11);await assert.rejects(decodeSession(t,key,1001));await assert.rejects(decodeSession(s.session_token,key,20000000),/expired/i);});
