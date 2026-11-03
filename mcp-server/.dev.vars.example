@@ -1,0 +1,4 @@
+# Generate a random 32-byte key locally. Never commit the real key.
+MEDQ_SESSION_KEY=REPLACE_WITH_BASE64_32_BYTE_RANDOM_KEY
+# Set only after the OpenAI submission portal provides the challenge token.
+OPENAI_APP_CHALLENGE=SET_ONLY_AFTER_PORTAL_PROVIDES_TOKEN
