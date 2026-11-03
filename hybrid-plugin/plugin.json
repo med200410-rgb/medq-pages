@@ -1,0 +1,38 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "medq-hybrid",
+  "version": "0.6.0",
+  "description": "Source-grounded medical MCQ practice with a five-option exam engine.",
+  "author": { "name": "ABBAS MUSHTAQ ALI ALHATEMI" },
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "MedQ | Medical MCQ Builder",
+        "shortDescription": "Five-option medical MCQ exams",
+        "longDescription": "MedQ helps medical students create difficult, source-grounded board-style MCQ practice exams from their lecture materials. It validates exactly five distinct options (A–E), presents one question at a time, grades each answer immediately, explains incorrect answers in Iraqi Arabic mixed with English medical terminology, and calculates the final score. Educational use only; not medical advice.",
+        "developerName": "ABBAS MUSHTAQ ALI ALHATEMI",
+        "category": "Education & Research",
+        "capabilities": ["Interactive"],
+        "defaultPrompt": "Create a difficult five-option medical MCQ exam from my lecture.",
+        "websiteURL": "https://med200410-rgb.github.io/medq-pages/",
+        "supportURL": "https://med200410-rgb.github.io/medq-pages/support.html",
+        "privacyPolicyURL": "https://med200410-rgb.github.io/medq-pages/privacy.html",
+        "termsOfServiceURL": "https://med200410-rgb.github.io/medq-pages/terms.html",
+        "logo": "./assets/medq-icon.png",
+        "composerIcon": "./assets/medq-icon.png"
+      },
+      "review": {
+        "prompts": [
+          "Create a 15-question medical MCQ exam from the lecture I upload.",
+          "Make a difficult board-style exam using all the lecture files I attach.",
+          "Start a fresh five-option medical MCQ round without repeating previous learning points."
+        ]
+      },
+      "publication": {
+        "release_notes": "MedQ Hybrid 0.6.0 adds a remote MCP exam engine that validates five distinct A-E options, manages encrypted short-lived quiz sessions, grades one answer at a time, returns bilingual explanations for incorrect answers, and calculates final scores. The server does not call an AI API or store exam sessions in a database.",
+        "countries": []
+      }
+    }
+  },
+  "keywords": ["medical education", "medical students", "MCQ", "exam preparation", "study"]
+}
