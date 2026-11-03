@@ -37,10 +37,12 @@ function base64UrlToBytes(value: string): Uint8Array {
   return Uint8Array.from(raw, c=>c.charCodeAt(0));
 }
 async function gzip(bytes: Uint8Array): Promise<Uint8Array> {
-  return new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new CompressionStream("gzip"))).arrayBuffer());
+  const data = new Uint8Array(bytes).buffer as ArrayBuffer;
+  return new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new CompressionStream("gzip"))).arrayBuffer());
 }
 async function gunzip(bytes: Uint8Array): Promise<Uint8Array> {
-  return new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer());
+  const data = new Uint8Array(bytes).buffer as ArrayBuffer;
+  return new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer());
 }
 async function importSessionKey(encoded: string, usage: KeyUsage[]): Promise<CryptoKey> {
   let raw: Uint8Array; try { raw=base64UrlToBytes(encoded); } catch { throw new Error("MEDQ_SESSION_KEY is invalid or not configured."); }
