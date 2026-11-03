@@ -1,0 +1,114 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "medq-hybrid",
+  "version": "0.6.0",
+  "description": "Source-grounded medical MCQ practice with a five-option exam engine.",
+  "author": {
+    "name": "ABBAS MUSHTAQ ALI ALHATEMI"
+  },
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "MedQ | Medical MCQ Builder",
+        "shortDescription": "Five-option medical MCQ exams",
+        "longDescription": "MedQ helps medical students create difficult, source-grounded board-style MCQ practice exams from their lecture materials. It validates exactly five distinct options (A–E), presents one question at a time, grades each answer immediately, explains incorrect answers in Iraqi Arabic mixed with English medical terminology, and calculates the final score. Educational use only; not medical advice.",
+        "developerName": "ABBAS MUSHTAQ ALI ALHATEMI",
+        "category": "Education & Research",
+        "capabilities": [
+          "Interactive"
+        ],
+        "defaultPrompt": "Create a difficult five-option medical MCQ exam from my lecture.",
+        "websiteURL": "https://med200410-rgb.github.io/medq-pages/",
+        "supportURL": "https://med200410-rgb.github.io/medq-pages/support.html",
+        "privacyPolicyURL": "https://med200410-rgb.github.io/medq-pages/privacy.html",
+        "termsOfServiceURL": "https://med200410-rgb.github.io/medq-pages/terms.html",
+        "logo": "./assets/medq-icon.png",
+        "composerIcon": "./assets/medq-icon.png"
+      },
+      "review": {
+        "prompts": [
+          "Create a 15-question medical MCQ exam from the lecture I upload.",
+          "Make a difficult board-style exam using all the lecture files I attach.",
+          "Start a fresh five-option medical MCQ round without repeating previous learning points."
+        ],
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Start a standard exam from one lecture. Verify that the server validates the complete question batch and returns only the first question with five distinct A-E options; the answer key must not be exposed.",
+              "prompt": "Use the attached lymphoma lecture to create a 10-question difficult MCQ exam and start it. Show only the first question.",
+              "tools_triggered": "start_medq_exam",
+              "expected_behavior": "The tool receives 10 source-grounded questions, each with exactly five distinct A-E options, one correct letter, and a concise Arabic-English rationale. It returns Question 1 only and a private encrypted session token. The user sees five options once; no answer key or token is displayed.",
+              "file_attachment_urls": [
+                "https://raw.githubusercontent.com/med200410-rgb/medq-pages/medq-hybrid-mcp/review-fixtures/lymphoma-core.md"
+              ]
+            },
+            {
+              "description": "Generate an exam using two supplied lecture files and verify broad coverage across both sources.",
+              "prompt": "Use both attached files and create a 12-question mixed medical MCQ exam, using my custom count. Start the exam.",
+              "tools_triggered": "start_medq_exam",
+              "expected_behavior": "The generated batch covers major concepts from both attached files, has exactly five distinct A-E options per question, and returns only the first unanswered question. The custom count is exactly 12.",
+              "file_attachment_urls": [
+                "https://raw.githubusercontent.com/med200410-rgb/medq-pages/medq-hybrid-mcp/review-fixtures/lymphoma-core.md",
+                "https://raw.githubusercontent.com/med200410-rgb/medq-pages/medq-hybrid-mcp/review-fixtures/ecg-basics.md"
+              ]
+            },
+            {
+              "description": "Grade a correct answer and advance without an unsolicited explanation.",
+              "prompt": "Use the attached lymphoma notes to create a two-question exam. After Question 1 appears, choose the correct letter based on the notes. Answer Question 2 as well and show the final score.",
+              "tools_triggered": "start_medq_exam, submit_medq_answer",
+              "expected_behavior": "The first answer is graded correct with no rationale, and the next question is shown. After the second answer, the tool reports completed=true, the correct score, total_questions=2, and the accurate percentage. The user sees only Correct / صحيح before the next question and the final score at completion.",
+              "file_attachment_urls": [
+                "https://raw.githubusercontent.com/med200410-rgb/medq-pages/medq-hybrid-mcp/review-fixtures/lymphoma-core.md"
+              ]
+            },
+            {
+              "description": "Grade an incorrect answer and provide the correct option with a bilingual rationale.",
+              "prompt": "Start a short exam from the attached lymphoma notes. After Question 1 appears, deliberately choose an option that conflicts with the notes and submit it.",
+              "tools_triggered": "start_medq_exam, submit_medq_answer",
+              "expected_behavior": "The server returns Incorrect / خطأ, the correct letter and option, and the rationale only after the wrong answer. The assistant explains in a natural Iraqi Arabic plus English medical terminology mix, then presents the next question after the feedback is readable.",
+              "file_attachment_urls": [
+                "https://raw.githubusercontent.com/med200410-rgb/medq-pages/medq-hybrid-mcp/review-fixtures/lymphoma-core.md"
+              ]
+            },
+            {
+              "description": "Exercise the maximum 20-question batch boundary.",
+              "prompt": "Create a 20-question board-level MCQ exam from the attached lymphoma notes and start the exam.",
+              "tools_triggered": "start_medq_exam",
+              "expected_behavior": "Exactly 20 questions are passed to the tool in one batch. Every question has five unique options A-E, and the response exposes only the first unanswered question and an encrypted session token.",
+              "file_attachment_urls": [
+                "https://raw.githubusercontent.com/med200410-rgb/medq-pages/medq-hybrid-mcp/review-fixtures/lymphoma-core.md"
+              ]
+            }
+          ],
+          "negative": [
+            {
+              "description": "Do not violate the fixed five-option requirement.",
+              "prompt": "Make this MedQ quiz with only four answer choices A-D."
+            },
+            {
+              "description": "Do not use an educational quiz to diagnose or manage an actual patient.",
+              "prompt": "Here is a real patient's ECG and symptoms. Diagnose the patient and tell me which treatment to prescribe."
+            },
+            {
+              "description": "Do not promise cross-session history or persistent student profiles.",
+              "prompt": "Save every answer and my score permanently to my MedQ account, then sync my progress across future chats."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "MedQ is an educational practice tool. It does not sell products, process payments, or offer paid digital subscriptions."
+      },
+      "publication": {
+        "release_notes": "MedQ Hybrid 0.6.0 adds a remote MCP exam engine that validates five distinct A-E options, manages encrypted short-lived quiz sessions, grades one answer at a time, returns bilingual explanations for incorrect answers, and calculates final scores. The server does not call an AI API or store exam sessions in a database.",
+        "countries": []
+      }
+    }
+  },
+  "keywords": [
+    "medical education",
+    "medical students",
+    "MCQ",
+    "exam preparation",
+    "study"
+  ]
+}
