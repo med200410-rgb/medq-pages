@@ -44,9 +44,9 @@
             },
             {
               "description": "Generate an exam using two supplied lecture files and verify broad coverage across both sources.",
-              "prompt": "Use both attached files and create a 15-question mixed medical MCQ exam. Start the exam.",
+              "prompt": "Use both attached files and create a 12-question mixed medical MCQ exam, using my custom count. Start the exam.",
               "tools_triggered": "start_medq_exam",
-              "expected_behavior": "The generated batch covers the major concepts from both attached files, has exactly five distinct A-E options per question, and returns only the first unanswered question.",
+              "expected_behavior": "The generated batch covers major concepts from both attached files, has exactly five distinct A-E options per question, and returns only the first unanswered question. The custom count is exactly 12.",
               "file_attachment_urls": [
                 "https://raw.githubusercontent.com/med200410-rgb/medq-pages/medq-hybrid-mcp/review-fixtures/lymphoma-core.md",
                 "https://raw.githubusercontent.com/med200410-rgb/medq-pages/medq-hybrid-mcp/review-fixtures/ecg-basics.md"
@@ -54,9 +54,9 @@
             },
             {
               "description": "Grade a correct answer and advance without an unsolicited explanation.",
-              "prompt": "Start a short exam from the attached lymphoma notes. After Question 1 appears, choose the correct letter based on the notes and submit it.",
+              "prompt": "Use the attached lymphoma notes to create a two-question exam. After Question 1 appears, choose the correct letter based on the notes. Answer Question 2 as well and show the final score.",
               "tools_triggered": "start_medq_exam, submit_medq_answer",
-              "expected_behavior": "The server grades the selected letter as correct, returns no rationale or correct-answer explanation, and supplies the next unanswered question when one remains. The assistant shows only Correct / صحيح before the next question.",
+              "expected_behavior": "The first answer is graded correct with no rationale, and the next question is shown. After the second answer, the tool reports completed=true, the correct score, total_questions=2, and the accurate percentage. The user sees only Correct / صحيح before the next question and the final score at completion.",
               "file_attachment_urls": [
                 "https://raw.githubusercontent.com/med200410-rgb/medq-pages/medq-hybrid-mcp/review-fixtures/lymphoma-core.md"
               ]
