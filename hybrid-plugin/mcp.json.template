@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "medq-exam-engine": {
+      "type": "streamable-http",
+      "url": "__SET_AFTER_CLOUDFLARE_DEPLOYMENT__"
+    }
+  }
+}
