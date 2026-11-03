@@ -28,7 +28,7 @@ export function validateQuestions(questions: QuestionInput[]): void {
     if (!/[\u0600-\u06FF]/.test(q.rationale) || !/[A-Za-z]/.test(q.rationale)) throw new Error(`Question ${n}: rationale must mix Arabic and English medical terminology.`);
   });
 }
-function bytesToBase64Url(bytes: Uint8Array): string {
+function asArrayBuffer(bytes: Uint8Array): ArrayBuffer {\n  const copy = new Uint8Array(bytes.byteLength);\n  copy.set(bytes);\n  return copy.buffer;\n}\nfunction bytesToBase64Url(bytes: Uint8Array): string {
   let binary = ""; for (let i=0;i<bytes.length;i+=0x8000) binary += String.fromCharCode(...bytes.subarray(i,i+0x8000));
   return btoa(binary).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/g,"");
 }
@@ -47,11 +47,11 @@ async function gunzip(bytes: Uint8Array): Promise<Uint8Array> {
 async function importSessionKey(encoded: string, usage: KeyUsage[]): Promise<CryptoKey> {
   let raw: Uint8Array; try { raw=base64UrlToBytes(encoded); } catch { throw new Error("MEDQ_SESSION_KEY is invalid or not configured."); }
   if(raw.length!==32) throw new Error("MEDQ_SESSION_KEY must decode to exactly 32 random bytes.");
-  return crypto.subtle.importKey("raw",raw,{name:"AES-GCM"},false,usage);
+  return crypto.subtle.importKey("raw",asArrayBuffer(raw),{name:"AES-GCM"},false,usage);
 }
 export async function encodeSession(session: ExamSession, secret: string): Promise<string> {
   const key=await importSessionKey(secret,["encrypt"]); const packed=await gzip(new TextEncoder().encode(JSON.stringify(session)));
-  const iv=crypto.getRandomValues(new Uint8Array(12)); const cipher=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv},key,packed));
+  const iv=crypto.getRandomValues(new Uint8Array(12)); const cipher=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv:asArrayBuffer(iv)},key,asArrayBuffer(packed)));
   const token=bytesToBase64Url(new Uint8Array([...iv,...cipher]));
   if(token.length>MAX_SESSION_TOKEN_LENGTH) throw new Error("Exam is too large for a single session; split it into batches.");
   return token;
@@ -60,7 +60,7 @@ export async function decodeSession(token: string, secret: string, now=Date.now(
   if(typeof token!=="string"||token.length<40||token.length>MAX_SESSION_TOKEN_LENGTH) throw new Error("Invalid or oversized session token.");
   try {
     const bytes=base64UrlToBytes(token), iv=bytes.slice(0,12), cipher=bytes.slice(12), key=await importSessionKey(secret,["decrypt"]);
-    const plain=await crypto.subtle.decrypt({name:"AES-GCM",iv},key,cipher);
+    const plain=await crypto.subtle.decrypt({name:"AES-GCM",iv:asArrayBuffer(iv)},key,asArrayBuffer(cipher));
     const session=JSON.parse(new TextDecoder().decode(await gunzip(new Uint8Array(plain)))) as ExamSession;
     if(session.version!==1||!Number.isInteger(session.index)||!Number.isInteger(session.score)||!Array.isArray(session.questions)) throw new Error("Invalid session.");
     if(session.expires_at<=now) throw new Error("Session expired. Start a new exam.");
