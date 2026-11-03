@@ -1,5 +1,10 @@
 name: MedQ MCP checks
 on:
+  push:
+    branches: [medq-hybrid-mcp]
+    paths:
+      - "mcp-server/**"
+      - ".github/workflows/medq-mcp.yml"
   pull_request:
     branches: [main]
   workflow_dispatch:
