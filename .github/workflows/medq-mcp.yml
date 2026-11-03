@@ -1,11 +1,6 @@
 name: MedQ MCP checks
 on:
-  pull_request:
-    branches: [main]
   workflow_dispatch:
-concurrency:
-  group: medq-mcp-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
 jobs:
   test:
     runs-on: ubuntu-latest
