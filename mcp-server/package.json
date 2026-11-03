@@ -10,9 +10,9 @@
     "test": "node --experimental-strip-types --test test/engine.test.ts"
   },
   "dependencies": {
-    "@modelcontextprotocol/server": "2.0.0-beta.5",
-    "agents": "0.20.0",
-    "zod": "4.2.0"
+    "@modelcontextprotocol/server": "2.3.1",
+    "agents": "0.31.0",
+    "zod": "*"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "*",
